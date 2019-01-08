@@ -1,0 +1,8 @@
+@import '../../../assets/font/icons.wxss';
+@import '../../../assets/wxss/var.scss'; 
+
+.list-item{display:flex;align-items:center;height:100rpx;color:$lightBlack;padding:0 40rpx;background:#fff;}
+.name{font-size:$xl;}
+.addones{flex:1;text-align:right;}
+.active{color:$darkBlue;}
+.iconfont{display:inline-block;font-size:30rpx;}
