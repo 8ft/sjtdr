@@ -1,96 +1,54 @@
-const config = require('config.js')
-
-const uploadFile = (file,category,batch)=>{
-
+const upload = (cloudPath, filePath) => {
   return new Promise((resolve, reject) => {
-    wx.uploadFile({
-      url: `${config.host}/public/file/upload`,
-      filePath: file.path,
-      name: 'file',
-      header: {
-        'Content-Type': config.contentType,
-        'client_type': config.clientType,
-        'api_version': config.version,
-        'token': wx.getStorageSync('account').token || ''
-      },
-      formData: {
-        category: category,
-        multiple: '1',
-        batchNo:batch||''
-      },
+    wx.cloud.uploadFile({
+      cloudPath,
+      filePath,
       success: res => {
-        let data = JSON.parse(res.data)
-        if(data.code===0){
-          resolve(data.data.list[0])
-        }else{
-          reject(data.code)
-        }
+        resolve(res.fileID)
+      },
+      fail: e => {
+        wx.showToast({
+          icon: 'none',
+          title: '上传失败',
+        })
+        reject()
       }
     })
-
   })
 }
 
-const uploadFiles = (files, category, batch)=>{
-  if(tooBig(files)){
-    wx.showToast({
-      title: '图片不能超过5M,请重新选择',
-      icon:'none'
-    })
-    return
-  }
-  wx.showLoading()
+module.exports = (cloudPath, count) => {
   return new Promise((resolve, reject) => {
-    let promises = []
-
-    //如果没有批次号，先上传第一个获取批次号
-    if(!batch){
-      let results = []
-      let batchCache = ''
-
-      uploadFile(files[0], category, batch).then(firstFile=>{
-
-        batchCache = firstFile.batchNo
-        results.push(firstFile)
-
-        //用第一个获取的批次号上传剩余文件
-        files.map((file,index) => {
-          if(index>0){
-            promises.push(uploadFile(file, category, batchCache))
-          }
+    wx.chooseImage({
+      count: count,
+      sizeType: ['compressed'],
+      sourceType: ['album', 'camera'],
+      success: function (res) {
+        wx.showLoading({
+          title: '上传中',
+          mask: true
         })
 
-        Promise.all(promises).then(otherFiles => {
-            resolve(results.concat(otherFiles))
+        let promises = []
+        if (count > 1) {
+          res.tempFilePaths.forEach((file, index) => {
+            promises.push(upload(`${cloudPath}${index}${file.match(/\.[^.]+?$/)[0]}`, file))
+          })
+        } else {
+          promises.push(upload(cloudPath, file))
+        }
+
+        Promise.all(promises).then(result => {
+          resolve(result)
           wx.hideLoading()
         }).catch((error) => {
           reject()
           wx.hideLoading()
         })
-      })
-
-    }else{
-      //有批次号，直接上传
-      files.map(file => {
-        promises.push(uploadFile(file, category, batch))
-      })
-
-      Promise.all(promises).then(result => {
-        resolve(result)
-        wx.hideLoading()
-      }).catch((error) => {
+      },
+      fail: e => {
         reject()
-        wx.hideLoading()
-      })
-    }
-
+      }
+    })
   })
 }
-
-const tooBig=files=>{
-  return files.some(file=>{
-    return file.size / 1024 / 1024 > 5
-  })
-}
-
-module.exports = uploadFiles
