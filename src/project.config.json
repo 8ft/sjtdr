@@ -8,7 +8,7 @@
 		"minified": true,
 		"newFeature": true
 	},
-	"appid": "wx70c95c0d14aefe7b",
+	"appid": "wxadaebd07078b2c61",
 	"projectname": "sjtdr",
 	"libVersion": "2.2.5",
 	"condition": {
@@ -26,16 +26,6 @@
 		},
 		"game": {
 			"list": []
-		},
-		"miniprogram": {
-			"current": 0,
-			"list": [
-				{
-					"id": -1,
-					"name": "db guide",
-					"pathName": "pages/databaseGuide/databaseGuide"
-				}
-			]
 		}
 	}
 }
