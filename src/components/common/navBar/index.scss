@@ -1,0 +1,28 @@
+@import '../../../assets/wxss/var.scss'; 
+@import '../../../assets/font/icons.scss'; 
+.nav-bar{width:100%;
+  .nav-bar-default{position:relative;display:flex; align-items: center;background:#fff;width:100%;height:100rpx;
+    .return{position: absolute;bottom: 18rpx;left:16rpx;z-index: $topFloor;width:174rpx;height:64rpx;box-sizing:border-box;border:$border;border-radius:99rpx;display:flex; align-items: center; justify-content: center;
+      navigator{box-sizing: border-box;width:50%;height:100%;text-align: center;line-height: 64rpx;}
+      .back{border-right:$border;}
+      .iconfont{font-size:34rpx;color:black;line-height: 34rpx;}
+    }
+
+    .nav-bar-content{width:100%;
+      .nav-bar-title{font-size:36rpx;font-weight:500;color:#333;text-align:center;}
+    }
+    
+    &.transparent{background: transparent!important;
+      .nav-bar-title{color:#fff;}
+      .return{background:rgba(255,255,255,.7);
+        .icon-fanhui{border-color:$lightGray;border-color:$gray;}
+      }
+    }
+  }
+  
+  &.fixed{position:fixed;top:0;left:0;z-index: $topFloor;}
+}
+.nav-bar-placeholder{width:100%;height:100rpx;}
+
+
+

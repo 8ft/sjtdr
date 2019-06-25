@@ -1,0 +1,16 @@
+{
+  "pages": [
+    "pages/index/index"
+  ],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationStyle": "custom",
+    "backgroundTextStyle": "dark"
+  },
+  "usingComponents": {
+    "nav-bar": "/components/common/navBar/index"
+  },
+  "networkTimeout": {
+    "request": 60000
+  }
+}

@@ -11,16 +11,16 @@ const config = require('./build/config');
 const hasRmCssFiles = new Set();
 
 gulp.task('clear', () => {
-    return gulp.src('./dist/*')
+    return gulp.src('./dist/miniprogram/*')
         .pipe(clean({ force: true }));
 });
 
 gulp.task('copy', () => gulp.src(['./src/**/*', '!./src/**/*.scss'])
-    .pipe(changed('./dist'))
-    .pipe(gulp.dest('./dist')));
+    .pipe(changed('./dist/miniprogram'))
+    .pipe(gulp.dest('./dist/miniprogram')));
 
 gulp.task('sass', ['copy'], () => gulp.src('./src/**/*.scss')
-    .pipe(changed('./dist'))
+    .pipe(changed('./dist/miniprogram'))
     .pipe(tap((file) => {
         const filePath = path.dirname(file.path);
         const content = file.contents.toString();
@@ -29,7 +29,7 @@ gulp.task('sass', ['copy'], () => gulp.src('./src/**/*.scss')
             // hasFilter > 0表示filter的文件在配置文件中，打包完成后需要删除
             if (hasFilter.length > 0) {
                 const rmPath = path.join(filePath, $2);
-                // 将src改为dist，.scss改为.wxss，例如：'/xxx/src/scss/const.scss' => '/xxx/dist/scss/const.wxss'
+                // 将src改为dist，.scss改为.wxss，例如：'/xxx/src/scss/const.scss' => '/xxx/dist/miniprogram/scss/const.wxss'
                 const filea = rmPath.replace(/src/, 'dist').replace(/\.scss/, '.wxss');
                 // 加入待删除列表
                 hasRmCssFiles.add(filea);
@@ -48,7 +48,7 @@ gulp.task('sass', ['copy'], () => gulp.src('./src/**/*.scss')
     .pipe(rename({
         extname: '.wxss',
     }))
-    .pipe(gulp.dest('./dist')));
+    .pipe(gulp.dest('./dist/miniprogram')));
 
 gulp.task('clean:wxss', ['sass'], () => {
     const arr = [];

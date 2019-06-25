@@ -1,0 +1,7 @@
+@import '../../assets/wxss/var.scss';
+
+.nav-items{display: flex; align-items: center;
+  .userinfo-avatar{width:80rpx;height:80rpx;border-radius:50%;background-size:cover;margin:0 40rpx 0 20rpx;}
+  .userinfo-avatar:after{border:none;}
+  picker{text-align: center;}
+}
