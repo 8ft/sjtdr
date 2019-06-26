@@ -13,7 +13,36 @@ Page(observer({
     logged: false,
     takeSession: false,
     requestResult: '',
-    date: '2016-09-01'
+    date: '2016-09-01',
+
+    currentType:2,
+    types:[
+      {
+        id:0,
+        name:'交通',
+        icon:'car'
+      },
+      {
+        id:1,
+        name:'娱乐',
+        icon:'fun'
+      },
+      {
+        id:2,
+        name:'饮食',
+        icon:'food'
+      },
+      {
+        id:3,
+        name:'收入',
+        icon:'income'
+      },
+      {
+        id:4,
+        name:'购物',
+        icon:'shopping'
+      }
+    ]
   },
 
   onLoad: function () {
@@ -32,6 +61,14 @@ Page(observer({
           })
         }
       }
+    })
+  },
+
+  typeChange(e){
+    const current=e.currentTarget.dataset.index
+    if(current===this.data.currentType)return
+    this.setData({
+      currentType:current
     })
   },
 

@@ -1,11 +1,51 @@
 <nav-bar returnable="{{false}}">
   <view class="nav-items" slot="nav">
     <button open-type="getUserInfo" bindgetuserinfo="onGetUserInfo" class="userinfo-avatar" style="background-image: url({{avatarUrl}})"></button>
-    <picker mode="date" value="{{date}}" start="2015-09-01" end="2017-09-01" bindchange="bindDateChange">{{date}}</picker>
+    <tabs under-line-ratio="{{.5}}" tabs="{{['记录','账单','统计']}}" active="{{tabIndex}}" margin="65" bindchange="tabChange"></tabs>
   </view>
-  
 </nav-bar>
 
+<!-- <swiper bindchange="onSwiperChange" current="{{tabIndex}}" duration="300" style="height:{{swiperHeight}}px;"> -->
+
+      <!--记录-->
+      <!-- <swiper-item> -->
+        <view class="data">
+          <image mode="aspectFit" src="/assets/img/icons/{{types[currentType].icon}}.png"></image>
+          <view class="type">{{types[currentType].name}}</view>
+          <view class="val">￥12.00</view>
+          <picker mode="date" value="{{date}}" start="2015-09-01" end="2017-09-01" bindchange="bindDateChange">{{date}}</picker>
+          <view class="remark">包子+豆浆</view>
+        </view>
+
+
+        <scroll-view  
+          class='types'
+          scroll-x="true" 
+          >
+
+            <view class="type {{currentType===index?'active':''}}" wx:for="{{types}}" data-index="{{index}}" bindtap="typeChange">
+                <image mode="aspectFit" src="/assets/img/icons/{{item.icon}}.png"></image>
+            </view>
+            
+        </scroll-view>
+
+        <!--<scroll-view 
+          class='projects' 
+          style="height:{{scrollViewHeight}}px" 
+          scroll-y="true" 
+          upper-threshold="-80" 
+          enable-back-to-top="true"
+          bindscrolltoupper='refresh' 
+          bindscrolltolower="getMyPublish"> 
+          <block wx:if="{{myPublish.projects.length>0}}">
+            <project-card wx:for="{{myPublish.projects}}" project="{{item}}"></project-card>
+          </block>
+          <nodata wx:elif="{{!loading}}" text="还没有项目哦，快去发布OR申请~"></nodata>
+        </scroll-view>
+      </swiper-item> -->
+
+
+<!-- <picker mode="date" value="{{date}}" start="2015-09-01" end="2017-09-01" bindchange="bindDateChange">{{date}}</picker> -->
 
 
 <view class="keyboard">
