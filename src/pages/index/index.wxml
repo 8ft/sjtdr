@@ -1,6 +1,7 @@
-<nav-bar returnable="{{false}}">
+<nav-bar returnable="{{false}}" bindready="getNavHeight">
   <view class="nav-items" slot="nav">
     <button open-type="getUserInfo" bindgetuserinfo="onGetUserInfo" class="userinfo-avatar" style="background-image: url({{avatarUrl}})"></button>
+    <image class="book" mode="aspectFit" src="/assets/img/icons/books.png"></image>
     <tabs under-line-ratio="{{.5}}" tabs="{{['记录','账单','统计']}}" active="{{tabIndex}}" margin="65" bindchange="tabChange"></tabs>
   </view>
 </nav-bar>
@@ -9,7 +10,7 @@
 
       <!--记录-->
       <!-- <swiper-item> -->
-        <view class="data">
+        <view class="data" style="height:{{dataHeight}}px;">
           <image mode="aspectFit" src="/assets/img/icons/{{types[currentType].icon}}.png"></image>
           <view class="type">{{types[currentType].name}}</view>
           <view class="val">￥12.00</view>
@@ -20,14 +21,17 @@
 
         <scroll-view  
           class='types'
-          scroll-x="true" 
-          >
-
+          scroll-x="true">
             <view class="type {{currentType===index?'active':''}}" wx:for="{{types}}" data-index="{{index}}" bindtap="typeChange">
                 <image mode="aspectFit" src="/assets/img/icons/{{item.icon}}.png"></image>
             </view>
-            
         </scroll-view>
+
+        <view class="keyboard">
+            <view wx:for="{{keys}}" style="height:{{cellHeight}}px;line-height:{{cellHeight}}px;" class="{{item.type}}">{{item.val}}</view>
+        </view>
+
+
 
         <!--<scroll-view 
           class='projects' 
@@ -48,10 +52,7 @@
 <!-- <picker mode="date" value="{{date}}" start="2015-09-01" end="2017-09-01" bindchange="bindDateChange">{{date}}</picker> -->
 
 
-<view class="keyboard">
 
-
-</view>
 
 
 
