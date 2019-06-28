@@ -15,6 +15,8 @@ Page(observer({
     requestResult: '',
     date: '2016-09-01',
 
+    tabIndex: 0,
+
     currentType: 2,
     types: [
       {
@@ -61,7 +63,11 @@ Page(observer({
       { val: '0', type: 'num' },
       { val: 'del', type: 'del' },
       { val: '确认', type: 'confirm' }
-    ]
+    ],
+
+    input: '',
+    jump: false,
+    flying: false
   },
 
   onLoad: function () {
@@ -89,12 +95,14 @@ Page(observer({
 
     const swiperHeight = systemInfo.windowHeight - e.detail.height
     const cellHeight = systemInfo.windowWidth / 4
-    const dataHeight = swiperHeight -systemInfo.windowWidth- 160 * ratio
+    const dataHeight = swiperHeight - systemInfo.windowWidth - 160 * ratio
 
     this.setData({
       swiperHeight: swiperHeight,
       dataHeight: dataHeight,
-      cellHeight: cellHeight
+      cellHeight: cellHeight,
+      jumpX: `opacity:.1;transform:translateX(${systemInfo.windowWidth}px);`,
+      jumpY: `opacity:.1;transform:translateY(-${dataHeight / 3}px);`
     })
   },
 
@@ -110,6 +118,53 @@ Page(observer({
     return {
       title: '理财，从蒜账开始',
       imageUrl: '/assets/img/logo.png'
+    }
+  },
+
+  switchPage(e) {
+    const index = e.detail.index || e.detail.current
+    if (index === this.data.tabIndex) return
+    this.setData({
+      tabIndex: index
+    })
+
+    // if (index === 0) {
+    // } else if (index === 1 && this.data.myApply.projects.length === 0) {
+    //   this.getMyApply()
+    // }
+  },
+
+  onKeyDown(e) {
+    const type = e.currentTarget.dataset.type
+    switch (type) {
+      case 'confirm':
+        if (!this.data.input) return
+
+        this.setData({
+          jump: true
+        })
+
+        setTimeout(() => {
+          this.setData({
+            jump: false,
+            input: ''
+          })
+        }, 400)
+        break;
+
+      case 'num':
+      case 'point':
+        this.setData({
+          input: this.data.input += e.currentTarget.dataset.key
+        })
+        break;
+
+      case 'del':
+        let inputLen = this.data.input.length
+        this.setData({
+          input: this.data.input.substr(0, inputLen - 1)
+        })
+        break;
     }
   },
 

@@ -2,37 +2,62 @@
   <view class="nav-items" slot="nav">
     <button open-type="getUserInfo" bindgetuserinfo="onGetUserInfo" class="userinfo-avatar" style="background-image: url({{avatarUrl}})"></button>
     <image class="book" mode="aspectFit" src="/assets/img/icons/books.png"></image>
-    <tabs under-line-ratio="{{.5}}" tabs="{{['记录','账单','统计']}}" active="{{tabIndex}}" margin="65" bindchange="tabChange"></tabs>
+    <tabs under-line-ratio="{{.5}}" tabs="{{['记录','账单','统计']}}" active="{{tabIndex}}" margin="65" bindchange="switchPage"></tabs>
   </view>
 </nav-bar>
 
-<!-- <swiper bindchange="onSwiperChange" current="{{tabIndex}}" duration="300" style="height:{{swiperHeight}}px;"> -->
+<swiper bindchange="switchPage" current="{{tabIndex}}" duration="300" style="height:{{swiperHeight}}px;">
+    <!--记录-->
+    <swiper-item>
+      <view class="data" style="height:{{dataHeight}}px;">
+        <image mode="aspectFit" src="/assets/img/icons/{{types[currentType].icon}}.png"></image>
+        <view class="type">{{types[currentType].name}}</view>
 
-      <!--记录-->
-      <!-- <swiper-item> -->
-        <view class="data" style="height:{{dataHeight}}px;">
-          <image mode="aspectFit" src="/assets/img/icons/{{types[currentType].icon}}.png"></image>
-          <view class="type">{{types[currentType].name}}</view>
-          <view class="val">￥12.00</view>
-          <picker mode="date" value="{{date}}" start="2015-09-01" end="2017-09-01" bindchange="bindDateChange">{{date}}</picker>
-          <view class="remark">包子+豆浆</view>
+        <view class="val" style="{{jump?jumpX:''}};">
+          <view class="con" style="{{jump?jumpY:''}}">
+            <text>￥</text>
+            <text>{{input}}</text>
+            <text class="blink">|</text>
+          </view>
         </view>
 
+        <picker mode="date" value="{{date}}" start="2015-09-01" end="2017-09-01" bindchange="bindDateChange">{{date}}</picker>
+        <view class="remark">包子+豆浆</view>
+      </view>
 
-        <scroll-view  
-          class='types'
-          scroll-x="true">
-            <view class="type {{currentType===index?'active':''}}" wx:for="{{types}}" data-index="{{index}}" bindtap="typeChange">
-                <image mode="aspectFit" src="/assets/img/icons/{{item.icon}}.png"></image>
-            </view>
-        </scroll-view>
+      <scroll-view  
+        class='types'
+        scroll-x="true">
+          <view class="type {{currentType===index?'active':''}}" wx:for="{{types}}" data-index="{{index}}" bindtap="typeChange">
+              <image mode="aspectFit" src="/assets/img/icons/{{item.icon}}.png"></image>
+          </view>
+      </scroll-view>
 
-        <view class="keyboard">
-            <view wx:for="{{keys}}" style="height:{{cellHeight}}px;line-height:{{cellHeight}}px;" class="{{item.type}}">{{item.val}}</view>
-        </view>
+      <view class="keyboard">
+          <view wx:for="{{keys}}" style="height:{{cellHeight}}px;line-height:{{cellHeight}}px;" class="{{item.type}}" data-type="{{item.type}}" data-key="{{item.val}}" bindtap="onKeyDown">{{item.val}}</view>
+      </view>
+    </swiper-item>
+
+
+    <!--账单-->
+    <swiper-item>
+
+
+    </swiper-item>
 
 
 
+     <!--统计-->
+    <swiper-item>
+
+
+    </swiper-item>
+
+
+</swiper>
+
+
+ 
         <!--<scroll-view 
           class='projects' 
           style="height:{{scrollViewHeight}}px" 
